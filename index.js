@@ -1,6 +1,10 @@
 // TODO: Include packages needed for this application
 var inquirer = require("inquirer");
+var fs = require("fs");
 var generateMarkdown = require("./utils/generateMarkdown.js");
+const { object } = require("webidl-conversions");
+const fileName = "sampleREADME";
+const extension = "md";
 var licenses = [
   "Mozilla Public License 2.0",
   "Apache License 2.0",
@@ -57,3 +61,15 @@ const questions = [
   },
 ];
 
+inquirer.prompt(questions).then((answers) => {
+  console.log(answers.title, answers.description, answers);
+
+  return writeToFile(fileName, answers, extension);
+});
+
+// TODO: Create a function to write README file
+function writeToFile(fileName, data, extension) {
+  fs.writeFile(`${fileName}.${extension}`, generateMarkdown(data), (err) =>
+    err ? console.log(err) : console.log("Success!")
+  );
+}
